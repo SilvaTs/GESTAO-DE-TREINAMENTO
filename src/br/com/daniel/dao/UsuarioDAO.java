@@ -12,7 +12,6 @@ public class UsuarioDAO {
     public static PreparedStatement pst = null;
     public ResultSet rs = null;
    
-
     public static Connection connection;
 
     public UsuarioDAO() throws SQLException {
