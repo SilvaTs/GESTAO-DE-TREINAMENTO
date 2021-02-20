@@ -3,10 +3,11 @@ package br.com.daniel.model;
 public class EspacoCafe {
 
     private int id;
-    private String nome;
+    private String descricao;
     private String lotacao;    
     
     public EspacoCafe() {
+        
     }
 
     public int getId() {
@@ -17,12 +18,12 @@ public class EspacoCafe {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getLotacao() {
@@ -32,5 +33,11 @@ public class EspacoCafe {
     public void setLotacao(String lotacao) {
         this.lotacao = lotacao;
     }
+
+    @Override
+    public String toString() {
+        return "EspacoCafe{" + "descricao=" + descricao + '}';
+    }
+
     
 }
