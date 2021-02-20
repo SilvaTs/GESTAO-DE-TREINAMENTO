@@ -1,17 +1,27 @@
 
 package br.com.daniel.gui;
 
+import java.awt.Dimension;
+import javax.swing.JInternalFrame;
+
 /**
  *
  * @author Daniel
  */
-public class JFprincipal extends javax.swing.JFrame {
+public class GUITelaPrincipal extends javax.swing.JFrame {
 
-    public JFprincipal() {
+    public GUITelaPrincipal() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
 
     }
+    
+     private void centralizaForm(JInternalFrame frame) {
+        Dimension desktopSize = areaTrabalho.getSize();
+        Dimension jInternalFrameSize = frame.getSize();
+        frame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+        (desktopSize.height - jInternalFrameSize.height) / 2);
+     }
 
    
     @SuppressWarnings("unchecked")
@@ -82,7 +92,10 @@ public class JFprincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+         GUICadastroUsuario frame = new GUICadastroUsuario();    
+           centralizaForm(frame);
+           frame.setVisible(true);       
+           areaTrabalho.add(frame);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -102,20 +115,20 @@ public class JFprincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUITelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUITelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUITelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFprincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUITelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFprincipal().setVisible(true);
+                new GUITelaPrincipal().setVisible(true);
             }
         });
     }
