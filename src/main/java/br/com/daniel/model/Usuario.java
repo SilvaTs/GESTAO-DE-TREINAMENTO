@@ -33,6 +33,11 @@ public class Usuario {
     public void setSobreNome(String sobreNome) {
         this.sobreNome = sobreNome;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "nome=" + nome + '}';
+    }
     
     
 
