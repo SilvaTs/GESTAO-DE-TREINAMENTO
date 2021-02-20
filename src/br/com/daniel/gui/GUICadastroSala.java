@@ -1,29 +1,69 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.com.daniel.gui;
 
+package br.com.daniel.gui;
+    
+
+import br.com.daniel.dao.SalaDAO;
 import br.com.daniel.dao.UsuarioDAO;
+import br.com.daniel.model.Sala;
 import br.com.daniel.model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author Daniel
  */
 public class GUICadastroSala extends javax.swing.JInternalFrame {
-
+     private Sala sala;
+     private SalaDAO salaDAO;
+ 
+     PreparedStatement pst = null;
+       ResultSet rs = null;
     
        
     public GUICadastroSala() {
         initComponents();
     }
     
-     
+          private void adicionar() {
+       
+       try{
+           
+        sala = new Sala();                     
+       
+        if ((jTxtNomeSala.getText().isEmpty()) ) {
+            
+            JOptionPane.showMessageDialog(null, "Preencha o campo nome");
+        }
+        else if((jTxtLotacaoSala.getText().isEmpty())){
+            
+         JOptionPane.showMessageDialog(null, "Preencha o campo lotação");
+        
+        }
+        else {
+                              
+                sala.setNome(jTxtNomeSala.getText());
+                sala.setLotacao(jTxtLotacaoSala.getText());
+                
+                 salaDAO = new SalaDAO();
+                salaDAO.salvar(sala);
+                JOptionPane.showMessageDialog(null, "Sala inserida com sucesso! ");
+
+                limpaCampo();
+        }
+        
+       }catch(Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+       }
+    }
+   
+   private void limpaCampo() {
+    jTxtNomeSala.setText("");
+    jTxtLotacaoSala.setText("");   
+    jTxtNomeSala.requestFocus();
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +92,11 @@ public class GUICadastroSala extends javax.swing.JInternalFrame {
         jLblLotacaoSala.setText("LOTAÇÃO");
 
         BtCadastrarSala.setText("CADASTRAR");
+        BtCadastrarSala.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtCadastrarSalaActionPerformed(evt);
+            }
+        });
 
         BtSairSala.setText("SAIR");
         BtSairSala.addActionListener(new java.awt.event.ActionListener() {
@@ -108,6 +153,10 @@ public class GUICadastroSala extends javax.swing.JInternalFrame {
     private void BtSairSalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtSairSalaActionPerformed
         dispose();
     }//GEN-LAST:event_BtSairSalaActionPerformed
+
+    private void BtCadastrarSalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarSalaActionPerformed
+        adicionar();
+    }//GEN-LAST:event_BtCadastrarSalaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

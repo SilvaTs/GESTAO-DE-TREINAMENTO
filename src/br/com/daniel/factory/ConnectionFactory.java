@@ -15,7 +15,7 @@ public class ConnectionFactory {
 
     static {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null,
                     "Erro do sistema", "falha ao carregar o drive"
