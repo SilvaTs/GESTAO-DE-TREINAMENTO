@@ -25,6 +25,7 @@ public class ConnectionFactory {
         }
     }
 
+    
 public static Connection conecta() throws SQLException{
        if(con==null || con.isClosed()){
             
