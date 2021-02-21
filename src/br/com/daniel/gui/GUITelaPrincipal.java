@@ -1,4 +1,3 @@
-
 package br.com.daniel.gui;
 
 import java.awt.Dimension;
@@ -15,15 +14,14 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
 
     }
-    
-     private void centralizaForm(JInternalFrame frame) {
+
+    private void centralizaForm(JInternalFrame frame) {
         Dimension desktopSize = areaTrabalho.getSize();
         Dimension jInternalFrameSize = frame.getSize();
         frame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
-        (desktopSize.height - jInternalFrameSize.height) / 2);
-     }
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+    }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -107,31 +105,31 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuCadastroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroUsuarioActionPerformed
-         GUICadastroUsuario frame = new GUICadastroUsuario();    
-           centralizaForm(frame);
-           frame.setVisible(true);       
-           areaTrabalho.add(frame);
+        GUICadastroUsuario frame = new GUICadastroUsuario();
+        centralizaForm(frame);
+        frame.setVisible(true);
+        areaTrabalho.add(frame);
     }//GEN-LAST:event_MenuCadastroUsuarioActionPerformed
 
     private void MenuCadastroSalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroSalaActionPerformed
-           GUICadastroSala frame = new GUICadastroSala();    
-           centralizaForm(frame);
-           frame.setVisible(true);       
-           areaTrabalho.add(frame);
+        GUICadastroSala frame = new GUICadastroSala();
+        centralizaForm(frame);
+        frame.setVisible(true);
+        areaTrabalho.add(frame);
     }//GEN-LAST:event_MenuCadastroSalaActionPerformed
 
     private void MenuCadastroEspacoCafeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroEspacoCafeActionPerformed
-           GUICadastroEspacoCafe frame = new GUICadastroEspacoCafe();    
-           centralizaForm(frame);
-           frame.setVisible(true);       
-           areaTrabalho.add(frame);
+        GUICadastroEspacoCafe frame = new GUICadastroEspacoCafe();
+        centralizaForm(frame);
+        frame.setVisible(true);
+        areaTrabalho.add(frame);
     }//GEN-LAST:event_MenuCadastroEspacoCafeActionPerformed
 
     private void MenuCadastroTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroTreinamentoActionPerformed
-           GUICadastroTreinamento frame = new GUICadastroTreinamento();    
-           centralizaForm(frame);
-           frame.setVisible(true);       
-           areaTrabalho.add(frame);
+        GUICadastroTreinamento frame = new GUICadastroTreinamento();
+        centralizaForm(frame);
+        frame.setVisible(true);
+        areaTrabalho.add(frame);
     }//GEN-LAST:event_MenuCadastroTreinamentoActionPerformed
 
     /**

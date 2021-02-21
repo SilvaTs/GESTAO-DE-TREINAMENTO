@@ -1,69 +1,63 @@
-
 package br.com.daniel.gui;
-    
 
 import br.com.daniel.dao.SalaDAO;
-import br.com.daniel.dao.UsuarioDAO;
 import br.com.daniel.model.Sala;
-import br.com.daniel.model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-
 
 /**
  *
  * @author Daniel
  */
 public class GUICadastroSala extends javax.swing.JInternalFrame {
-     private Sala sala;
-     private SalaDAO salaDAO;
- 
-     PreparedStatement pst = null;
-       ResultSet rs = null;
-    
-       
+
+    private Sala sala;
+    private SalaDAO salaDAO;
+
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
     public GUICadastroSala() {
         initComponents();
     }
-    
-          private void adicionar() {
-       
-       try{
-           
-        sala = new Sala();                     
-       
-        if ((jTxtNomeSala.getText().isEmpty()) ) {
-            
-            JOptionPane.showMessageDialog(null, "Preencha o campo nome");
-        }
-        else if((jTxtLotacaoSala.getText().isEmpty())){
-            
-         JOptionPane.showMessageDialog(null, "Preencha o campo lotação");
-        
-        }
-        else {
-                              
+
+    private void adicionar() {
+
+        try {
+
+            sala = new Sala();
+
+            if ((jTxtNomeSala.getText().isEmpty())) {
+
+                JOptionPane.showMessageDialog(null, "Preencha o campo nome");
+                jTxtNomeSala.requestFocus();
+            } else if ((jTxtLotacaoSala.getText().isEmpty())) {
+
+                JOptionPane.showMessageDialog(null, "Preencha o campo lotação");
+                jTxtLotacaoSala.requestFocus();
+            } else {
+
                 sala.setNome(jTxtNomeSala.getText());
                 sala.setLotacao(jTxtLotacaoSala.getText());
-                
-                 salaDAO = new SalaDAO();
+
+                salaDAO = new SalaDAO();
                 salaDAO.salvar(sala);
-                JOptionPane.showMessageDialog(null, "Sala inserida com sucesso! ");
+                JOptionPane.showMessageDialog(null, "Sala Inserida Com Sucesso! ");
 
                 limpaCampo();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
-        
-       }catch(Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-       }
     }
-   
-   private void limpaCampo() {
-    jTxtNomeSala.setText("");
-    jTxtLotacaoSala.setText("");   
-    jTxtNomeSala.requestFocus();
-   }
+
+    private void limpaCampo() {
+        jTxtNomeSala.setText("");
+        jTxtLotacaoSala.setText("");
+        jTxtNomeSala.requestFocus();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GESTAO-DE-TREINAMENTO/src/br/com/daniel/gui/GUICadastroUsuario.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GESTAO-DE-TREINAMENTO/src/br/com/daniel/factory/ConnectionFactory.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GESTAO-DE-TREINAMENTO/src/br/com/daniel/gui/GUICadastroSala.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GESTAO-DE-TREINAMENTO/src/br/com/daniel/dao/SalaDAO.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GESTAO-DE-TREINAMENTO/src/br/com/daniel/dao/UsuarioDAO.java</file>
         </group>
     </open-files>

@@ -1,10 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package br.com.daniel.gui;
+
+import br.com.daniel.dao.EspacoCafeDAO;
+import br.com.daniel.model.EspacoCafe;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,10 +13,55 @@ package br.com.daniel.gui;
  */
 public class GUICadastroEspacoCafe extends javax.swing.JInternalFrame {
 
-    /** Creates new form GUICadastroEspacoCafe */
+     private EspacoCafe espacoCafe;
+     private EspacoCafeDAO espacoCafeDAO;
+ 
+     PreparedStatement pst = null;
+       ResultSet rs = null;
+    
     public GUICadastroEspacoCafe() {
         initComponents();
     }
+    
+      private void adicionar() {
+       
+       try{
+           
+        espacoCafe = new EspacoCafe();                     
+       
+        if ((jTxtNomeEspacoCafe.getText().isEmpty()) ) {
+            
+            JOptionPane.showMessageDialog(null, "Preencha o campo nome");
+            jTxtNomeEspacoCafe.requestFocus();
+        }
+        else if((jTxtLotacaoEspacoCafe.getText().isEmpty())){
+            
+         JOptionPane.showMessageDialog(null, "Preencha o campo lotação");
+         jTxtLotacaoEspacoCafe.requestFocus();
+
+        }
+        else {
+                              
+                espacoCafe.setDescricao(jTxtNomeEspacoCafe.getText());
+                espacoCafe.setLotacao(jTxtLotacaoEspacoCafe.getText());
+                
+                 espacoCafeDAO = new EspacoCafeDAO();
+                espacoCafeDAO.salvar(espacoCafe);
+                JOptionPane.showMessageDialog(null, "Espaço Café Inserida Com Sucesso!");
+
+                limpaCampo();
+        }
+        
+       }catch(Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+       }
+    }
+   
+   private void limpaCampo() {
+    jTxtNomeEspacoCafe.setText("");
+    jTxtLotacaoEspacoCafe.setText("");   
+    jTxtNomeEspacoCafe.requestFocus();
+   }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -44,6 +90,11 @@ public class GUICadastroEspacoCafe extends javax.swing.JInternalFrame {
         jLblLotacaoEspacoCafe.setText("LOTAÇÃO");
 
         BtCadastrarEspacoCafe.setText("CADASTRAR");
+        BtCadastrarEspacoCafe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtCadastrarEspacoCafeActionPerformed(evt);
+            }
+        });
 
         BtSairEspacoCafe.setText("SAIR");
         BtSairEspacoCafe.addActionListener(new java.awt.event.ActionListener() {
@@ -63,17 +114,20 @@ public class GUICadastroEspacoCafe extends javax.swing.JInternalFrame {
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLblLotacaoEspacoCafe)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTxtLotacaoEspacoCafe)
-                                .addComponent(jLblNomeEspacoCafe, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(BtCadastrarEspacoCafe)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(BtSairEspacoCafe))
-                                .addComponent(jTxtNomeEspacoCafe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLblNomeEspacoCafe)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BtCadastrarEspacoCafe)
+                                .addGap(18, 18, 18)
+                                .addComponent(BtSairEspacoCafe)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTxtLotacaoEspacoCafe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTxtNomeEspacoCafe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -87,9 +141,9 @@ public class GUICadastroEspacoCafe extends javax.swing.JInternalFrame {
                 .addComponent(jTxtNomeEspacoCafe, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLblLotacaoEspacoCafe, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTxtLotacaoEspacoCafe, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtCadastrarEspacoCafe)
                     .addComponent(BtSairEspacoCafe))
@@ -102,6 +156,10 @@ public class GUICadastroEspacoCafe extends javax.swing.JInternalFrame {
     private void BtSairEspacoCafeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtSairEspacoCafeActionPerformed
         dispose();
     }//GEN-LAST:event_BtSairEspacoCafeActionPerformed
+
+    private void BtCadastrarEspacoCafeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarEspacoCafeActionPerformed
+        adicionar();
+    }//GEN-LAST:event_BtCadastrarEspacoCafeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

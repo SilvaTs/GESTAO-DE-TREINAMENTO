@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.daniel.gui;
 
 import br.com.daniel.dao.UsuarioDAO;
@@ -17,53 +12,53 @@ import javax.swing.JOptionPane;
  */
 public class GUICadastroUsuario extends javax.swing.JInternalFrame {
 
-     private Usuario usuario;
-     private UsuarioDAO usuarioDAO;
- 
-     PreparedStatement pst = null;
-       ResultSet rs = null;
-    
+    private Usuario usuario;
+    private UsuarioDAO usuarioDAO;
+
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
     public GUICadastroUsuario() {
         initComponents();
     }
-    
-     private void adicionar() {
-       
-       try{
-           
-        usuario = new Usuario();                     
-       
-        if ((jTxtNomeUsuario.getText().isEmpty()) ) {
-            
-            JOptionPane.showMessageDialog(null, "Preencha o campo nome");
-        }
-        else if((jTxtSobreNomeUsuario.getText().isEmpty())){
-            
-         JOptionPane.showMessageDialog(null, "Preencha o campo sobre nome");
-        
-        }
-        else {
-                              
+
+    private void adicionar() {
+
+        try {
+
+            usuario = new Usuario();
+
+            if ((jTxtNomeUsuario.getText().isEmpty())) {
+
+                JOptionPane.showMessageDialog(null, "Preencha o campo nome");
+                jTxtNomeUsuario.requestFocus();
+            } else if ((jTxtSobreNomeUsuario.getText().isEmpty())) {
+
+                JOptionPane.showMessageDialog(null, "Preencha o campo sobre nome");
+                jTxtSobreNomeUsuario.requestFocus();
+
+            } else {
+
                 usuario.setNome(jTxtNomeUsuario.getText());
                 usuario.setSobreNome(jTxtSobreNomeUsuario.getText());
-                
+
                 usuarioDAO = new UsuarioDAO();
                 usuarioDAO.salvar(usuario);
-                JOptionPane.showMessageDialog(null, "Usuário inserido com sucesso! ");
+                JOptionPane.showMessageDialog(null, "Usuário Inserido Com Sucesso! ");
 
                 limpaCampo();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
-        
-       }catch(Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-       }
     }
-   
-   private void limpaCampo() {
-    jTxtNomeUsuario.setText("");
-    jTxtSobreNomeUsuario.setText("");   
-    jTxtNomeUsuario.requestFocus();
-   }
+
+    private void limpaCampo() {
+        jTxtNomeUsuario.setText("");
+        jTxtSobreNomeUsuario.setText("");
+        jTxtNomeUsuario.requestFocus();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -152,7 +147,7 @@ public class GUICadastroUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtSairUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtSairUsuarioActionPerformed
-       dispose();
+        dispose();
     }//GEN-LAST:event_BtSairUsuarioActionPerformed
 
     private void BtCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarUsuarioActionPerformed
