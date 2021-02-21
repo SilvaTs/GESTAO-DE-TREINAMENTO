@@ -5,7 +5,7 @@ public class Sala {
     
     private int id;
     private String nome;
-    private String lotacao;    
+    private int lotacao;    
 
     public Sala() {
         
@@ -27,11 +27,11 @@ public class Sala {
         this.nome = nome;
     }
 
-    public String getLotacao() {
+    public int getLotacao() {
         return lotacao;
     }
 
-    public void setLotacao(String lotacao) {
+    public void setLotacao(int lotacao) {
         this.lotacao = lotacao;
     }
 

@@ -4,7 +4,7 @@ public class EspacoCafe {
 
     private int id;
     private String descricao;
-    private String lotacao;    
+    private int lotacao;    
     
     public EspacoCafe() {
         
@@ -26,11 +26,11 @@ public class EspacoCafe {
         this.descricao = descricao;
     }
 
-    public String getLotacao() {
+    public int getLotacao() {
         return lotacao;
     }
 
-    public void setLotacao(String lotacao) {
+    public void setLotacao(int lotacao) {
         this.lotacao = lotacao;
     }
 

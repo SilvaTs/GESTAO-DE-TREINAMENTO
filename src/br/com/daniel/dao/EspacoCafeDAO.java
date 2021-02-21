@@ -24,7 +24,7 @@ public class EspacoCafeDAO {
 
             pst = connection.prepareStatement(sql);
             pst.setString(1, espacoCafe.getDescricao());
-            pst.setString(2, espacoCafe.getLotacao());
+            pst.setInt(2, espacoCafe.getLotacao());
           
             pst.executeUpdate();
 

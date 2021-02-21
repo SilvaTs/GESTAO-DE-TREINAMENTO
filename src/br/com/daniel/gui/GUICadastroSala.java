@@ -37,9 +37,9 @@ public class GUICadastroSala extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Preencha o campo lotação");
                 jTxtLotacaoSala.requestFocus();
             } else {
-
+                int quantidade = Integer.parseInt(jTxtLotacaoSala.getText());
                 sala.setNome(jTxtNomeSala.getText());
-                sala.setLotacao(jTxtLotacaoSala.getText());
+                sala.setLotacao(quantidade);
 
                 salaDAO = new SalaDAO();
                 salaDAO.salvar(sala);
