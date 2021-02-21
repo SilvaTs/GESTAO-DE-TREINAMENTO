@@ -36,7 +36,7 @@ public class EspacoCafe {
 
     @Override
     public String toString() {
-        return "EspacoCafe{" + "descricao=" + descricao + '}';
+        return this.getDescricao();
     }
 
     

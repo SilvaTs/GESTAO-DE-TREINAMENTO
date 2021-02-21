@@ -5,6 +5,17 @@
  */
 package br.com.daniel.gui;
 
+import br.com.daniel.dao.EspacoCafeDAO;
+import br.com.daniel.dao.SalaDAO;
+import br.com.daniel.dao.UsuarioDAO;
+import br.com.daniel.model.EspacoCafe;
+import br.com.daniel.model.Sala;
+import br.com.daniel.model.Usuario;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Daniel
@@ -40,9 +51,9 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         jTxtIdTreinamento = new javax.swing.JTextField();
         jTxtIntervaloTreinamento = new javax.swing.JTextField();
         JCBEtapa = new javax.swing.JComboBox<>();
-        JCBUsuario = new javax.swing.JComboBox<>();
-        JCBEspacoCafe = new javax.swing.JComboBox<>();
-        JCBSala = new javax.swing.JComboBox<>();
+        JCBUsuario = new javax.swing.JComboBox();
+        JCBEspacoCafe = new javax.swing.JComboBox();
+        JCBSala = new javax.swing.JComboBox();
         BtSairSalaTreinamento = new javax.swing.JButton();
         BtAtualizarTreinamento = new javax.swing.JButton();
         BtCadastrarTreinamento = new javax.swing.JButton();
@@ -90,14 +101,38 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
         JCBEtapa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "selecione", "1", " 2", " " }));
 
-        JCBUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         JCBUsuario.setSelectedIndex(-1);
+        JCBUsuario.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                JCBUsuarioAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
-        JCBEspacoCafe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         JCBEspacoCafe.setSelectedIndex(-1);
+        JCBEspacoCafe.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                JCBEspacoCafeAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
-        JCBSala.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         JCBSala.setSelectedIndex(-1);
+        JCBSala.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                JCBSalaAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         BtSairSalaTreinamento.setText("SAIR");
         BtSairSalaTreinamento.addActionListener(new java.awt.event.ActionListener() {
@@ -200,16 +235,61 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_BtSairSalaTreinamentoActionPerformed
 
+    private void JCBEspacoCafeAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_JCBEspacoCafeAncestorAdded
+        EspacoCafeDAO espacoCafeDAO = null;
+        try {
+            espacoCafeDAO = new EspacoCafeDAO();
+        } catch (SQLException ex) {
+            Logger.getLogger(GUICadastroTreinamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<EspacoCafe> listarEspacoCafe = espacoCafeDAO.buscarTodosEspacoCafe();
+        JCBEspacoCafe.removeAll();
+
+        for (EspacoCafe espacoCafe : listarEspacoCafe) {
+            JCBEspacoCafe.addItem(espacoCafe.getDescricao());
+        }
+    }//GEN-LAST:event_JCBEspacoCafeAncestorAdded
+
+    private void JCBUsuarioAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_JCBUsuarioAncestorAdded
+        UsuarioDAO usuarioDAO = null;
+        try {
+            usuarioDAO = new UsuarioDAO();
+        } catch (SQLException ex) {
+            Logger.getLogger(GUICadastroTreinamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<Usuario> listarUsuarios = usuarioDAO.buscarTodosUsuarios();
+        JCBUsuario.removeAll();
+
+        for (Usuario usuario : listarUsuarios) {
+            JCBUsuario.addItem(usuario.getNome());
+        }
+    }//GEN-LAST:event_JCBUsuarioAncestorAdded
+
+    private void JCBSalaAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_JCBSalaAncestorAdded
+        SalaDAO salaDAO = null;
+        try {
+            salaDAO = new SalaDAO();
+        } catch (SQLException ex) {
+            Logger.getLogger(GUICadastroTreinamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<Sala> listarSalas = salaDAO.buscarTodasSalas();
+        JCBSala.removeAll();
+
+        for (Sala sala : listarSalas) {
+            JCBSala.addItem(sala.getNome());
+        }
+    }//GEN-LAST:event_JCBSalaAncestorAdded
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtAtualizarTreinamento;
     private javax.swing.JButton BtBuscar;
     private javax.swing.JButton BtCadastrarTreinamento;
     private javax.swing.JButton BtSairSalaTreinamento;
-    private javax.swing.JComboBox<String> JCBEspacoCafe;
+    private javax.swing.JComboBox JCBEspacoCafe;
     private javax.swing.JComboBox<String> JCBEtapa;
-    private javax.swing.JComboBox<String> JCBSala;
-    private javax.swing.JComboBox<String> JCBUsuario;
+    private javax.swing.JComboBox JCBSala;
+    private javax.swing.JComboBox JCBUsuario;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLblEmailCliente;

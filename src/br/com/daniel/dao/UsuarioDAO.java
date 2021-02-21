@@ -1,16 +1,22 @@
 
 package br.com.daniel.dao;
 
+import static br.com.daniel.dao.EspacoCafeDAO.connection;
+import static br.com.daniel.dao.EspacoCafeDAO.pst;
+import static br.com.daniel.dao.EspacoCafeDAO.rs;
 import br.com.daniel.factory.ConnectionFactory;
+import br.com.daniel.model.EspacoCafe;
 import br.com.daniel.model.Usuario;
 import java.sql.*;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class UsuarioDAO {
 
     public static PreparedStatement pst = null;
-    public ResultSet rs = null;
+       public static ResultSet rs = null;
    
     public static Connection connection;
 
@@ -33,5 +39,26 @@ public class UsuarioDAO {
         }
     }
 
+ public List<Usuario> buscarTodosUsuarios() {
+        List<Usuario> model = new ArrayList<>();
+        try {
 
+            String query = "SELECT * FROM usuario";
+            pst = connection.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt(1));
+                usuario.setNome(rs.getString(2));
+                usuario.setSobreNome(rs.getString(3));
+                model.add(usuario);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return model;
+    }
+    
 }

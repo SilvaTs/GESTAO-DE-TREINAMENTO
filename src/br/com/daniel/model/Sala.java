@@ -37,7 +37,7 @@ public class Sala {
 
     @Override
     public String toString() {
-        return "Sala{" + "nome=" + nome + '}';
+        return this.getNome();
     }
     
         

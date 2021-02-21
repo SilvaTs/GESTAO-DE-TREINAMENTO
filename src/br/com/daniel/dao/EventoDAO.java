@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class EventoDAO {
 
     public static PreparedStatement pst = null;
-    public ResultSet rs = null;
+    public  ResultSet rs = null;
    
     public static Connection connection;
 
