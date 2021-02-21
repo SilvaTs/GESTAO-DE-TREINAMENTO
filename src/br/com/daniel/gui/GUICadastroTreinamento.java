@@ -1,20 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.daniel.gui;
 
 import br.com.daniel.dao.EspacoCafeDAO;
+import br.com.daniel.dao.EventoDAO;
 import br.com.daniel.dao.SalaDAO;
 import br.com.daniel.dao.UsuarioDAO;
 import br.com.daniel.model.EspacoCafe;
+import br.com.daniel.model.Evento;
 import br.com.daniel.model.Sala;
 import br.com.daniel.model.Usuario;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,11 +24,68 @@ import java.util.logging.Logger;
  */
 public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form GUICadastrarTreinamento
-     */
+    // private final DefaultTableModel modelTable = new DefaultTableModel();
+    //private JTable table = new JTable(modelTable);
+    private Evento objEvento;
+    private EventoDAO objDAO;
+    private EspacoCafe espacoCafe;
+    private Usuario usuario;
+    private Sala sala;
+    private List<EspacoCafe> listarEspacoCafe;
+    private List<Usuario> listarUsuarios;
+    private List<Sala> listarSalas;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
     public GUICadastroTreinamento() {
         initComponents();
+    }
+
+    private void adicionar() {
+
+        try {
+
+//        if ((jTxtFabricante.getText().isEmpty()) || (jTxtModelo.getText().isEmpty()) || (jTxtDescricao.getText().isEmpty()) 
+//                || (jTxtQuantidade.getText().isEmpty() || (jTxtValorUnit.getText().isEmpty()))) {
+//            JOptionPane.showMessageDialog(null, "Informe valores para os campos");
+//        } else {
+            espacoCafe = new EspacoCafe();
+            usuario = new Usuario();
+            sala = new Sala();
+            objEvento = new Evento();
+
+            objEvento.setIntervalo(jTxtIntervaloTreinamento.getText());
+
+            int etapa = Integer.parseInt((String) JCBEtapa.getSelectedItem());
+            objEvento.setEtapa(etapa);
+
+            int posicaoEspacoCafe = JCBEspacoCafe.getSelectedIndex();
+            EspacoCafe espacoCafe = listarEspacoCafe.get(posicaoEspacoCafe);
+            objEvento.setEspacoCafe(espacoCafe);
+
+            int posicaoUsario = JCBUsuario.getSelectedIndex();
+            Usuario usuario = listarUsuarios.get(posicaoUsario);
+            objEvento.setUsuario(usuario);
+
+            int posicaoSala = JCBUsuario.getSelectedIndex();
+            Sala sala = listarSalas.get(posicaoSala);
+            objEvento.setSala(sala);
+
+            objDAO = new EventoDAO();
+            objDAO.salvar(objEvento);
+            JOptionPane.showMessageDialog(null, "Cadastro Inserido com Sucesso!");
+
+            limpaCampo();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void limpaCampo() {
+        jTxtIntervaloTreinamento.setText("");
+
+        jTxtIntervaloTreinamento.requestFocus();
     }
 
     /**
@@ -50,7 +109,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jTxtIdTreinamento = new javax.swing.JTextField();
         jTxtIntervaloTreinamento = new javax.swing.JTextField();
-        JCBEtapa = new javax.swing.JComboBox<>();
+        JCBEtapa = new javax.swing.JComboBox();
         JCBUsuario = new javax.swing.JComboBox();
         JCBEspacoCafe = new javax.swing.JComboBox();
         JCBSala = new javax.swing.JComboBox();
@@ -99,9 +158,8 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
         jTxtIdTreinamento.setEnabled(false);
 
-        JCBEtapa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "selecione", "1", " 2", " " }));
+        JCBEtapa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", " " }));
 
-        JCBUsuario.setSelectedIndex(-1);
         JCBUsuario.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -112,7 +170,6 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             }
         });
 
-        JCBEspacoCafe.setSelectedIndex(-1);
         JCBEspacoCafe.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -123,7 +180,6 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             }
         });
 
-        JCBSala.setSelectedIndex(-1);
         JCBSala.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -144,6 +200,11 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         BtAtualizarTreinamento.setText("ATUALIZAR");
 
         BtCadastrarTreinamento.setText("CADASTRAR");
+        BtCadastrarTreinamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtCadastrarTreinamentoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,7 +303,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(GUICadastroTreinamento.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<EspacoCafe> listarEspacoCafe = espacoCafeDAO.buscarTodosEspacoCafe();
+        listarEspacoCafe = espacoCafeDAO.buscarTodosEspacoCafe();
         JCBEspacoCafe.removeAll();
 
         for (EspacoCafe espacoCafe : listarEspacoCafe) {
@@ -257,7 +318,8 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(GUICadastroTreinamento.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Usuario> listarUsuarios = usuarioDAO.buscarTodosUsuarios();
+
+        listarUsuarios = usuarioDAO.buscarTodosUsuarios();
         JCBUsuario.removeAll();
 
         for (Usuario usuario : listarUsuarios) {
@@ -272,13 +334,18 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(GUICadastroTreinamento.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Sala> listarSalas = salaDAO.buscarTodasSalas();
+
+        listarSalas = salaDAO.buscarTodasSalas();
         JCBSala.removeAll();
 
         for (Sala sala : listarSalas) {
             JCBSala.addItem(sala.getNome());
         }
     }//GEN-LAST:event_JCBSalaAncestorAdded
+
+    private void BtCadastrarTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarTreinamentoActionPerformed
+        adicionar();
+    }//GEN-LAST:event_BtCadastrarTreinamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -287,7 +354,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     private javax.swing.JButton BtCadastrarTreinamento;
     private javax.swing.JButton BtSairSalaTreinamento;
     private javax.swing.JComboBox JCBEspacoCafe;
-    private javax.swing.JComboBox<String> JCBEtapa;
+    private javax.swing.JComboBox JCBEtapa;
     private javax.swing.JComboBox JCBSala;
     private javax.swing.JComboBox JCBUsuario;
     private javax.swing.JLabel jLabel2;

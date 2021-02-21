@@ -1,15 +1,14 @@
 package br.com.daniel.model;
 
-import java.util.Date;
 
 public class Evento {
 
     private int id;
     private int etapa;
     private String intervalo;
-    private int espaco_cafe_id;
-    private int usuario_id;
-    private int sala_id;
+    private EspacoCafe espacoCafe;
+    private Sala sala;
+    private Usuario usuario;
     
     public Evento() {
     }
@@ -38,34 +37,29 @@ public class Evento {
         this.intervalo = intervalo;
     }
 
-    public int getEspaco_cafe_id() {
-        return espaco_cafe_id;
+    public EspacoCafe getEspacoCafe() {
+        return espacoCafe;
     }
 
-    public void setEspaco_cafe_id(int espaco_cafe_id) {
-        this.espaco_cafe_id = espaco_cafe_id;
+    public void setEspacoCafe(EspacoCafe espacoCafe) {
+        this.espacoCafe = espacoCafe;
     }
 
-    public int getUsuario_id() {
-        return usuario_id;
+    public Sala getSala() {
+        return sala;
     }
 
-    public void setUsuario_id(int usuario_id) {
-        this.usuario_id = usuario_id;
+    public void setSala(Sala sala) {
+        this.sala = sala;
     }
 
-    public int getSala_id() {
-        return sala_id;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setSala_id(int sala_id) {
-        this.sala_id = sala_id;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
-
-    @Override
-    public String toString() {
-        return "Evento{" + "espaco_cafe_id=" + espaco_cafe_id + ", usuario_id=" + usuario_id + ", sala_id=" + sala_id + '}';
-    }
-
+    
    
 }

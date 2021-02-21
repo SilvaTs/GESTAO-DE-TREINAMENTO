@@ -3,7 +3,6 @@ package br.com.daniel.dao;
 
 import br.com.daniel.factory.ConnectionFactory;
 import br.com.daniel.model.Evento;
-import br.com.daniel.model.Sala;
 import java.sql.*;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
@@ -26,9 +25,9 @@ public class EventoDAO {
             pst = connection.prepareStatement(sql);
             pst.setString(1, evento.getIntervalo());
             pst.setInt(2, evento.getEtapa());
-            pst.setInt(3, evento.getEspaco_cafe_id());
-            pst.setInt(4, evento.getUsuario_id());
-            pst.setInt(5, evento.getSala_id());
+            pst.setInt(3, evento.getEspacoCafe().getId());
+            pst.setInt(4, evento.getUsuario().getId());
+            pst.setInt(5, evento.getSala().getId());
             pst.executeUpdate();
 
         } catch (Exception e) {
