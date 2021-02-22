@@ -11,12 +11,17 @@ import br.com.daniel.model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -40,22 +45,35 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     public GUICadastroTreinamento() {
         initComponents();
     }
+    
+     public static boolean isHoraValida(String horaParaValidacao) {
+        boolean isHoraValida = false;
+
+        Pattern pattern = Pattern.compile("([01][0-9]|2[0-3]):[0-5][0-9]");
+        Matcher matcher = pattern.matcher(horaParaValidacao);
+        isHoraValida = matcher.matches();
+
+        return isHoraValida;
+    }
 
     private void adicionar() {
 
         try {
 
-//        if ((jTxtFabricante.getText().isEmpty()) || (jTxtModelo.getText().isEmpty()) || (jTxtDescricao.getText().isEmpty()) 
-//                || (jTxtQuantidade.getText().isEmpty() || (jTxtValorUnit.getText().isEmpty()))) {
-//            JOptionPane.showMessageDialog(null, "Informe valores para os campos");
-//        } else {
+        if (jTxtIntervaloTreinamento.getText().contentEquals("  :  ")) {
+            JOptionPane.showMessageDialog(null, "Informe a Hora");
+            jTxtIntervaloTreinamento.requestFocus();
+        }else if(JCBEspacoCafe.getSelectedItem() == null || JCBUsuario.getSelectedItem() == null
+                || JCBSala.getSelectedItem() == null) {
+        }
+        else {
             espacoCafe = new EspacoCafe();
             usuario = new Usuario();
             sala = new Sala();
             objEvento = new Evento();
-
+                          
             objEvento.setIntervalo(jTxtIntervaloTreinamento.getText());
-
+           
             int etapa = Integer.parseInt((String) JCBEtapa.getSelectedItem());
             objEvento.setEtapa(etapa);
 
@@ -67,7 +85,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             Usuario usuario = listarUsuarios.get(posicaoUsario);
             objEvento.setUsuario(usuario);
 
-            int posicaoSala = JCBUsuario.getSelectedIndex();
+            int posicaoSala = JCBSala.getSelectedIndex();
             Sala sala = listarSalas.get(posicaoSala);
             objEvento.setSala(sala);
 
@@ -76,7 +94,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Cadastro Inserido com Sucesso!");
 
             limpaCampo();
-
+        }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -108,7 +126,6 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         jLblEmailCliente = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jTxtIdTreinamento = new javax.swing.JTextField();
-        jTxtIntervaloTreinamento = new javax.swing.JTextField();
         JCBEtapa = new javax.swing.JComboBox();
         JCBUsuario = new javax.swing.JComboBox();
         JCBEspacoCafe = new javax.swing.JComboBox();
@@ -116,6 +133,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         BtSairSalaTreinamento = new javax.swing.JButton();
         BtAtualizarTreinamento = new javax.swing.JButton();
         BtCadastrarTreinamento = new javax.swing.JButton();
+        jTxtIntervaloTreinamento = new javax.swing.JFormattedTextField();
 
         setClosable(true);
 
@@ -206,6 +224,17 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             }
         });
 
+        try {
+            jTxtIntervaloTreinamento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jTxtIntervaloTreinamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtIntervaloTreinamentoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -214,22 +243,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jLblNomeCliente)
                     .addComponent(jLblEnderecoCliente)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLblTelefoneCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLblEmailCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(JCBSala, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JCBEspacoCafe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTxtIdTreinamento, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JCBEtapa, 0, 295, Short.MAX_VALUE)
-                            .addComponent(jTxtIntervaloTreinamento)
-                            .addComponent(JCBUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(BtCadastrarTreinamento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -241,7 +255,23 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                             .addComponent(jTxtPesquisarUsuarios)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(BtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLblTelefoneCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLblEmailCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
+                            .addComponent(jLabel4)
+                            .addComponent(jLblNomeCliente))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(JCBSala, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(JCBEspacoCafe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(JCBEtapa, 0, 295, Short.MAX_VALUE)
+                            .addComponent(JCBUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTxtIdTreinamento, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -257,10 +287,13 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTxtIdTreinamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLblNomeCliente))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLblNomeCliente))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLblEnderecoCliente)
@@ -282,7 +315,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                     .addComponent(BtAtualizarTreinamento)
                     .addComponent(BtSairSalaTreinamento)
                     .addComponent(BtCadastrarTreinamento))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -344,8 +377,29 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JCBSalaAncestorAdded
 
     private void BtCadastrarTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarTreinamentoActionPerformed
-        adicionar();
+          try {
+
+                    if (isHoraValida(jTxtIntervaloTreinamento.getText().toString()) == true) {
+
+                         adicionar();
+
+                    } else {
+                        
+                     JOptionPane.showMessageDialog(null, "HORA INVÁLIDA");
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    
+                }
+        
+       
     }//GEN-LAST:event_BtCadastrarTreinamentoActionPerformed
+
+    private void jTxtIntervaloTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtIntervaloTreinamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtIntervaloTreinamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -366,7 +420,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTblTreinamento;
     private javax.swing.JTextField jTxtIdTreinamento;
-    private javax.swing.JTextField jTxtIntervaloTreinamento;
+    private javax.swing.JFormattedTextField jTxtIntervaloTreinamento;
     private javax.swing.JTextField jTxtPesquisarUsuarios;
     // End of variables declaration//GEN-END:variables
 }
