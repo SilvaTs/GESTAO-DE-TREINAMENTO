@@ -1,10 +1,10 @@
-
 package br.com.daniel.dao;
 
 import static br.com.daniel.dao.UsuarioDAO.connection;
 import static br.com.daniel.dao.UsuarioDAO.pst;
-import static br.com.daniel.dao.UsuarioDAO.rs;
+import static br.com.daniel.dao.UsuarioDAO.rss;
 import br.com.daniel.factory.ConnectionFactory;
+import br.com.daniel.model.EspacoCafe;
 import br.com.daniel.model.Sala;
 import br.com.daniel.model.Usuario;
 import java.sql.*;
@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class SalaDAO {
 
     public static PreparedStatement pst = null;
-    public static ResultSet rs = null;   
+    public static ResultSet rs = null;
     public static Connection connection;
 
     public SalaDAO() throws SQLException {
@@ -30,7 +30,7 @@ public class SalaDAO {
             pst = connection.prepareStatement(sql);
             pst.setString(1, sala.getNome());
             pst.setInt(2, sala.getLotacao());
-          
+
             pst.executeUpdate();
 
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class SalaDAO {
         }
     }
 
-     public List<Sala> buscarTodasSalas() {
+    public List<Sala> buscarTodasSalas() {
         List<Sala> model = new ArrayList<>();
         try {
 
@@ -58,6 +58,31 @@ public class SalaDAO {
             JOptionPane.showMessageDialog(null, e);
         }
         return model;
+    }
+
+    public void buscarSalaOuEspacoCafe(Sala sala, EspacoCafe espacoCafe) {
+        try {
+
+            String sql = "select\n"
+                    + "\n"
+                    + "us.nome as Pessoas\n"
+                    + "\n"
+                    + "from\n"
+                    + "evento ev\n"
+                    + "inner join sala sa on(sa.id = ev.sala_id)\n"
+                    + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
+                    + "inner join usuario us on(us.id = ev.usuario_id)\n"
+                    + "where sa.nome LIKE '%" + sala.getNome()+"%' or ec.descricao LIKE '%"+ espacoCafe.getDescricao()+ "%' \n";
+
+
+            pst = connection.prepareStatement(sql);
+
+            rss = pst.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
     }
 
 }

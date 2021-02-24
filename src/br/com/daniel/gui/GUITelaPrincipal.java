@@ -34,6 +34,8 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
         MenuCadastroEspacoCafe = new javax.swing.JMenuItem();
         MenuCadastroTreinamento = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        MenuConsultarUsuario = new javax.swing.JMenuItem();
+        MenuConsultarSalaOuEspacoCafe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Gestão de Treinamento V1.0.0");
@@ -86,6 +88,32 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("CONSULTA");
+        jMenu2.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenu2MenuSelected(evt);
+            }
+        });
+
+        MenuConsultarUsuario.setText("Consultar Pessoa");
+        MenuConsultarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuConsultarUsuarioActionPerformed(evt);
+            }
+        });
+        jMenu2.add(MenuConsultarUsuario);
+
+        MenuConsultarSalaOuEspacoCafe.setText("Consltar Sala ou Espaco Café");
+        MenuConsultarSalaOuEspacoCafe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuConsultarSalaOuEspacoCafeActionPerformed(evt);
+            }
+        });
+        jMenu2.add(MenuConsultarSalaOuEspacoCafe);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -132,6 +160,24 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
         areaTrabalho.add(frame);
     }//GEN-LAST:event_MenuCadastroTreinamentoActionPerformed
 
+    private void jMenu2MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu2MenuSelected
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu2MenuSelected
+
+    private void MenuConsultarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuConsultarUsuarioActionPerformed
+        GUIConsultarUsuario frame = new GUIConsultarUsuario();
+        centralizaForm(frame);
+        frame.setVisible(true);
+        areaTrabalho.add(frame);
+    }//GEN-LAST:event_MenuConsultarUsuarioActionPerformed
+
+    private void MenuConsultarSalaOuEspacoCafeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuConsultarSalaOuEspacoCafeActionPerformed
+        GUIConsultarSalaOuEspacoCafe frame = new GUIConsultarSalaOuEspacoCafe();
+        centralizaForm(frame);
+        frame.setVisible(true);
+        areaTrabalho.add(frame);
+    }//GEN-LAST:event_MenuConsultarSalaOuEspacoCafeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -172,6 +218,8 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuCadastroSala;
     private javax.swing.JMenuItem MenuCadastroTreinamento;
     private javax.swing.JMenuItem MenuCadastroUsuario;
+    private javax.swing.JMenuItem MenuConsultarSalaOuEspacoCafe;
+    private javax.swing.JMenuItem MenuConsultarUsuario;
     public static javax.swing.JDesktopPane areaTrabalho;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
