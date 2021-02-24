@@ -4,6 +4,8 @@ import br.com.daniel.dao.EspacoCafeDAO;
 import br.com.daniel.dao.EventoDAO;
 import br.com.daniel.dao.SalaDAO;
 import br.com.daniel.dao.UsuarioDAO;
+import static br.com.daniel.dao.UsuarioDAO.rss;
+import static br.com.daniel.gui.GUIConsultarUsuario.jTblTreinamento;
 import br.com.daniel.model.EspacoCafe;
 import br.com.daniel.model.Evento;
 import br.com.daniel.model.Sala;
@@ -17,6 +19,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import net.proteanit.sql.DbUtils;
 
 
 /**
@@ -25,13 +30,14 @@ import javax.swing.JOptionPane;
  */
 public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
-    // private final DefaultTableModel modelTable = new DefaultTableModel();
-    //private JTable table = new JTable(modelTable);
+     private final DefaultTableModel modelTable = new DefaultTableModel();;
+    private JTable table = new JTable(modelTable);
     private Evento evento;
     private EventoDAO eventoDAO;
     private EspacoCafe espacoCafe;
     private Usuario usuario;
     private Sala sala;
+    private UsuarioDAO usuarioDAO;
     private List<EspacoCafe> listarEspacoCafe;
     private List<Usuario> listarUsuarios;
     private List<Sala> listarSalas;
@@ -95,6 +101,87 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+    
+      private void pesquisarUsuarios() {
+
+        try {
+            eventoDAO = new EventoDAO();
+            usuario = new Usuario();
+            usuario.setNome(jTxtPesquisarUsuarios.getText());
+            if (jTxtPesquisarUsuarios.getText().isEmpty()) {
+
+                JOptionPane.showMessageDialog(null, "Digite um Nome ou a Letra Inical Da Pessoa");
+                  atualizaTabela();
+            } else {
+
+                eventoDAO.buscarEventoPorNomeDoUsuario(usuario);
+
+                jTblTreinamento.setModel(DbUtils.resultSetToTableModel(rss));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+      
+      private void atualizaTabela(){
+       
+        buscarEventos();
+        DefaultTableModel tmp = modelTable;
+        tmp.getDataVector().removeAllElements();
+        tmp.fireTableDataChanged();
+        table.repaint();
+    
+    }
+        
+    private void buscarEventos(){
+	        	
+	try {
+          
+            eventoDAO = new EventoDAO();
+            eventoDAO.getTodosEventos();
+	    jTblTreinamento.setModel(DbUtils.resultSetToTableModel(rss));
+	    	
+	} catch (Exception e) {
+	    JOptionPane.showMessageDialog(null, e);
+	}
+	   	
+    }
+    
+ 
+      
+        public void setar_campos(){
+        
+	int setar = jTblTreinamento.getSelectedRow();
+       
+	jTxtIntervaloTreinamento.setText( jTblTreinamento.getModel().getValueAt(setar, 0).toString());
+	jTxtIdTreinamento.setText( jTblTreinamento.getModel().getValueAt(setar, 1).toString());
+        
+        int colunaEtapa = 1;          
+        String etapaSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEtapa).toString();
+	JCBEtapa.setSelectedItem(etapaSelecionado);
+        
+        int colunaEspacoCafe = 2;          
+        String espacoCafeSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEspacoCafe).toString(); 
+        JCBEspacoCafe.setSelectedItem(espacoCafeSelecionado);
+                
+        int colunaUsuario = 3;          
+        String usuarioSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaUsuario).toString();        
+        JCBUsuario.setSelectedItem(usuarioSelecionado);
+        
+	int colunaSala = 4;          
+        String salaSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaSala).toString();
+	JCBSala.setSelectedItem(salaSelecionado);
+        
+        
+	//a linha abaixo desabilita o botão adicionar
+	jTxtIdTreinamento.setEnabled(false);	
+        jTxtIntervaloTreinamento.setEnabled(false);	
+        JCBEtapa.setEnabled(false);	
+        JCBEspacoCafe.setEnabled(false);	
+        JCBUsuario.setEnabled(false);
+        
+    }
 
     private void limpaCampo() {
         jTxtIntervaloTreinamento.setText("");
@@ -126,10 +213,17 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         BtAtualizarTreinamento = new javax.swing.JButton();
         BtCadastrarTreinamento = new javax.swing.JButton();
         jTxtIntervaloTreinamento = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
+        setTitle("Tela  Cadastro de Treinamento");
 
         BtBuscar.setText("BUSCAR");
+        BtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtBuscarActionPerformed(evt);
+            }
+        });
 
         jTblTreinamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -139,7 +233,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Intervalo", "Etapa", "Espaço do Café", "Usuário", "Sala"
+                "Intervalo", "Etapa", "Espaço ", "Pessoas", "Sala"
             }
         ));
         jTblTreinamento.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -227,6 +321,8 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("NOME DA PESSOA :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -242,12 +338,13 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                         .addComponent(BtAtualizarTreinamento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BtSairSalaTreinamento))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jTxtPesquisarUsuarios)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(BtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTxtPesquisarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -261,18 +358,19 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                             .addComponent(JCBEspacoCafe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(JCBEtapa, 0, 295, Short.MAX_VALUE)
                             .addComponent(JCBUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTxtIdTreinamento, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)))))
+                            .addComponent(jTxtIdTreinamento)
+                            .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTxtPesquisarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtBuscar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTxtPesquisarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BtBuscar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -307,14 +405,14 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                     .addComponent(BtAtualizarTreinamento)
                     .addComponent(BtSairSalaTreinamento)
                     .addComponent(BtCadastrarTreinamento))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTblTreinamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblTreinamentoMouseClicked
-        //setar_campos();
+        setar_campos();
     }//GEN-LAST:event_jTblTreinamentoMouseClicked
 
     private void BtSairSalaTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtSairSalaTreinamentoActionPerformed
@@ -393,6 +491,10 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTxtIntervaloTreinamentoActionPerformed
 
+    private void BtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtBuscarActionPerformed
+        pesquisarUsuarios();
+    }//GEN-LAST:event_BtBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtAtualizarTreinamento;
@@ -403,6 +505,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox JCBEtapa;
     private javax.swing.JComboBox JCBSala;
     private javax.swing.JComboBox JCBUsuario;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLblEmailCliente;

@@ -1,8 +1,10 @@
 
 package br.com.daniel.dao;
 
+import static br.com.daniel.dao.UsuarioDAO.rss;
 import br.com.daniel.factory.ConnectionFactory;
 import br.com.daniel.model.Evento;
+import br.com.daniel.model.Usuario;
 import java.sql.*;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
@@ -33,6 +35,52 @@ public class EventoDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+    
+        public void buscarEventoPorNomeDoUsuario(Usuario usuario) {
+        try {
+            
+            String sql = "select\n"
+                    + "\n"
+                    + " ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"                 
+                    + "\n"
+                    + "from\n"
+                    + "evento ev\n"
+                    + "inner join sala sa on(sa.id = ev.sala_id)\n"
+                    + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
+                    + "inner join usuario us on(us.id = ev.usuario_id)\n"
+                    + "where us.nome  LIKE '%" + usuario.getNome() + "%'\n" ;
+            
+            pst = connection.prepareStatement(sql);
+
+            rss = pst.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }
+        
+          public void getTodosEventos() {
+
+        try {
+            String sql = "select\n"
+                            + "\n"
+                            + " ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"                 
+                            + "\n"
+                            + "from\n"
+                            + "evento ev\n"
+                            + "inner join sala sa on(sa.id = ev.sala_id)\n"
+                            + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
+                            + "inner join usuario us on(us.id = ev.usuario_id)\n";
+                            
+            
+            pst = connection.prepareStatement(sql);
+            rss = pst.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
