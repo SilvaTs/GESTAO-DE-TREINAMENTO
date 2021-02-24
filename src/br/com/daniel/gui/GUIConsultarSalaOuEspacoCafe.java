@@ -1,4 +1,3 @@
-
 package br.com.daniel.gui;
 
 import br.com.daniel.dao.SalaDAO;
@@ -22,12 +21,12 @@ public class GUIConsultarSalaOuEspacoCafe extends javax.swing.JInternalFrame {
 
     PreparedStatement pst = null;
     ResultSet rs = null;
-    
+
     public GUIConsultarSalaOuEspacoCafe() {
         initComponents();
     }
 
-     private void pesquisarUsuariosPorSalaouEspacoCafe() {
+    private void pesquisarUsuariosPorSalaouEspacoCafe() {
 
         try {
             salaDAO = new SalaDAO();
@@ -35,15 +34,17 @@ public class GUIConsultarSalaOuEspacoCafe extends javax.swing.JInternalFrame {
             espacoCafe = new EspacoCafe();
             sala.setNome(jTxtPesquisarSalaOuEspacoCafe.getText());
             espacoCafe.setDescricao(jTxtPesquisarSalaOuEspacoCafe.getText());
+          
             if (jTxtPesquisarSalaOuEspacoCafe.getText().isEmpty()) {
 
                 JOptionPane.showMessageDialog(null, "Digite Nome da Sala ou do Espaço Café");
 
             } else {
-                 
+
                 salaDAO.buscarSalaOuEspacoCafe(sala, espacoCafe);
 
                 jTblTreinamento.setModel(DbUtils.resultSetToTableModel(rss));
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);

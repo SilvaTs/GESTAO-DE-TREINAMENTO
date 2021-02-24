@@ -40,6 +40,8 @@ public class GUITelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Gestão de Treinamento V1.0.0");
 
+        areaTrabalho.setName(""); // NOI18N
+
         javax.swing.GroupLayout areaTrabalhoLayout = new javax.swing.GroupLayout(areaTrabalho);
         areaTrabalho.setLayout(areaTrabalhoLayout);
         areaTrabalhoLayout.setHorizontalGroup(

@@ -72,11 +72,9 @@ public class SalaDAO {
                     + "inner join sala sa on(sa.id = ev.sala_id)\n"
                     + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
                     + "inner join usuario us on(us.id = ev.usuario_id)\n"
-                    + "where sa.nome LIKE '%" + sala.getNome()+"%' or ec.descricao LIKE '%"+ espacoCafe.getDescricao()+ "%' \n";
-
+                    + "where sa.nome LIKE '%" + sala.getNome() + "%' or ec.descricao LIKE '%" + espacoCafe.getDescricao() + "%' \n";
 
             pst = connection.prepareStatement(sql);
-
             rss = pst.executeQuery();
 
         } catch (Exception e) {
