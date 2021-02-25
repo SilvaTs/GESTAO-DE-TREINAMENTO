@@ -37,6 +37,25 @@ public class EventoDAO {
         }
     }
     
+     public void alterar(Evento evento) {
+
+        try {
+   
+            String query = "update evento set intervalo=?, etapa=?, espaco_cafe_id=?, usuario_id=? , sala_id=? where id=?";
+            pst = connection.prepareStatement(query);
+            pst.setInt(6, evento.getId());
+            pst.setString(1, evento.getIntervalo());
+            pst.setInt(2, evento.getEtapa());
+            pst.setInt(3, evento.getEspacoCafe().getId());
+            pst.setInt(4, evento.getUsuario().getId());
+            pst.setInt(5, evento.getSala().getId());
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
         public void buscarEventoPorNomeDoUsuario(Usuario usuario) {
         try {
             

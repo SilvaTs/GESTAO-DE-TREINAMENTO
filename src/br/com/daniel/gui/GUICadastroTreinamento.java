@@ -23,14 +23,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
-
 /**
  *
  * @author Daniel
  */
 public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
-     private final DefaultTableModel modelTable = new DefaultTableModel();;
+    private final DefaultTableModel modelTable = new DefaultTableModel();
+    ;
     private JTable table = new JTable(modelTable);
     private Evento evento;
     private EventoDAO eventoDAO;
@@ -47,8 +47,8 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     public GUICadastroTreinamento() {
         initComponents();
     }
-    
-     public static boolean isHoraValida(String horaParaValidacao) {
+
+    public static boolean isHoraValida(String horaParaValidacao) {
         boolean isHoraValida = false;
 
         Pattern pattern = Pattern.compile("([01][0-9]|2[0-3]):[0-5][0-9]");
@@ -62,47 +62,95 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
         try {
 
-        if (jTxtIntervaloTreinamento.getText().contentEquals("  :  ")) {
-            JOptionPane.showMessageDialog(null, "Informe a Hora");
-            jTxtIntervaloTreinamento.requestFocus();
-        }else if(JCBEspacoCafe.getSelectedItem() == null || JCBUsuario.getSelectedItem() == null
-                || JCBSala.getSelectedItem() == null) {
-        }
-        else {
-            espacoCafe = new EspacoCafe();
-            usuario = new Usuario();
-            sala = new Sala();
-            evento = new Evento();
-                          
-            evento.setIntervalo(jTxtIntervaloTreinamento.getText());
-           
-            int etapa = Integer.parseInt((String) JCBEtapa.getSelectedItem());
-            evento.setEtapa(etapa);
+            if (jTxtIntervaloTreinamento.getText().contentEquals("  :  ")) {
+                JOptionPane.showMessageDialog(null, "Informe a Hora");
+                jTxtIntervaloTreinamento.requestFocus();
+            } else if (JCBEspacoCafe.getSelectedItem() == null || JCBUsuario.getSelectedItem() == null
+                    || JCBSala.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "Não Contém nenhum cadastro ");
+            } else {
+                espacoCafe = new EspacoCafe();
+                usuario = new Usuario();
+                sala = new Sala();
+                evento = new Evento();
 
-            int posicaoEspacoCafe = JCBEspacoCafe.getSelectedIndex();
-            EspacoCafe espacoCafe = listarEspacoCafe.get(posicaoEspacoCafe);
-            evento.setEspacoCafe(espacoCafe);
+                evento.setIntervalo(jTxtIntervaloTreinamento.getText());
 
-            int posicaoUsario = JCBUsuario.getSelectedIndex();
-            Usuario usuario = listarUsuarios.get(posicaoUsario);
-            evento.setUsuario(usuario);
+                int etapa = Integer.parseInt((String) JCBEtapa.getSelectedItem());
+                evento.setEtapa(etapa);
 
-            int posicaoSala = JCBSala.getSelectedIndex();
-            Sala sala = listarSalas.get(posicaoSala);
-            evento.setSala(sala);
+                int posicaoEspacoCafe = JCBEspacoCafe.getSelectedIndex();
+                EspacoCafe espacoCafe = listarEspacoCafe.get(posicaoEspacoCafe);
+                evento.setEspacoCafe(espacoCafe);
 
-            eventoDAO = new EventoDAO();
-            eventoDAO.salvar(evento);
-            JOptionPane.showMessageDialog(null, "Cadastro Inserido com Sucesso!");
+                int posicaoUsario = JCBUsuario.getSelectedIndex();
+                Usuario usuario = listarUsuarios.get(posicaoUsario);
+                evento.setUsuario(usuario);
 
-            limpaCampo();
-        }
+                int posicaoSala = JCBSala.getSelectedIndex();
+                Sala sala = listarSalas.get(posicaoSala);
+                evento.setSala(sala);
+
+                eventoDAO = new EventoDAO();
+                eventoDAO.salvar(evento);
+                JOptionPane.showMessageDialog(null, "Cadastro Inserido com Sucesso!");
+
+                limpaCampo();
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-      private void pesquisarUsuarios() {
+
+    private void alterar() {
+        try {
+
+            if (jTxtIntervaloTreinamento.getText().contentEquals("  :  ")) {
+                JOptionPane.showMessageDialog(null, "Informe a Hora");
+                jTxtIntervaloTreinamento.requestFocus();
+            } else if (JCBEspacoCafe.getSelectedItem() == null || JCBUsuario.getSelectedItem() == null
+                    || JCBSala.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "Não Contém nenhum cadastro ");
+            } else {
+                espacoCafe = new EspacoCafe();
+                usuario = new Usuario();
+                sala = new Sala();
+                evento = new Evento();
+
+                evento.setIntervalo(jTxtIntervaloTreinamento.getText());
+
+                int etapa = Integer.parseInt((String) JCBEtapa.getSelectedItem());
+                evento.setEtapa(etapa);
+
+                int posicaoEspacoCafe = JCBEspacoCafe.getSelectedIndex();
+                EspacoCafe espacoCafe = listarEspacoCafe.get(posicaoEspacoCafe);
+                evento.setEspacoCafe(espacoCafe);
+
+                int posicaoUsario = JCBUsuario.getSelectedIndex();
+                Usuario usuario = listarUsuarios.get(posicaoUsario);
+                evento.setUsuario(usuario);
+
+                int posicaoSala = JCBSala.getSelectedIndex();
+                Sala sala = listarSalas.get(posicaoSala);
+                evento.setSala(sala);
+                
+                int id = Integer.parseInt(jTxtIdTreinamento.getText());               
+                evento.setId(id);
+                eventoDAO = new EventoDAO();
+                eventoDAO.alterar(evento);
+              
+                atualizaTabela();
+                JOptionPane.showMessageDialog(null, "Atualizado com sucesso! ");
+              
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    private void pesquisarUsuarios() {
 
         try {
             eventoDAO = new EventoDAO();
@@ -111,7 +159,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             if (jTxtPesquisarUsuarios.getText().isEmpty()) {
 
                 JOptionPane.showMessageDialog(null, "Digite um Nome ou a Letra Inical Da Pessoa");
-                  atualizaTabela();
+                atualizaTabela();
             } else {
 
                 eventoDAO.buscarEventoPorNomeDoUsuario(usuario);
@@ -123,64 +171,63 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         }
 
     }
-      
-      private void atualizaTabela(){
-       
+
+    private void atualizaTabela() {
+
         buscarEventos();
         DefaultTableModel tmp = modelTable;
         tmp.getDataVector().removeAllElements();
         tmp.fireTableDataChanged();
         table.repaint();
-    
+
     }
-        
-    private void buscarEventos(){
-	        	
-	try {
-          
+
+    private void buscarEventos() {
+
+        try {
+
             eventoDAO = new EventoDAO();
             eventoDAO.getTodosEventos();
-	    jTblTreinamento.setModel(DbUtils.resultSetToTableModel(rss));
-	    	
-	} catch (Exception e) {
-	    JOptionPane.showMessageDialog(null, e);
-	}
-	   	
+            jTblTreinamento.setModel(DbUtils.resultSetToTableModel(rss));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
     }
-    
- 
-      
-        public void setar_campos(){
-        
-	int setar = jTblTreinamento.getSelectedRow();
-       
-	jTxtIntervaloTreinamento.setText( jTblTreinamento.getModel().getValueAt(setar, 0).toString());
-	jTxtIdTreinamento.setText( jTblTreinamento.getModel().getValueAt(setar, 1).toString());
-        
-        int colunaEtapa = 1;          
+
+    public void setar_campos() {
+
+        int setar = jTblTreinamento.getSelectedRow();
+
+        jTxtIntervaloTreinamento.setText(jTblTreinamento.getModel().getValueAt(setar, 0).toString());
+        jTxtIdTreinamento.setText(jTblTreinamento.getModel().getValueAt(setar, 1).toString());
+
+        int colunaEtapa = 1;
         String etapaSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEtapa).toString();
-	JCBEtapa.setSelectedItem(etapaSelecionado);
-        
-        int colunaEspacoCafe = 2;          
-        String espacoCafeSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEspacoCafe).toString(); 
+        JCBEtapa.setSelectedItem(etapaSelecionado);
+
+        int colunaEspacoCafe = 2;
+        String espacoCafeSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEspacoCafe).toString();
         JCBEspacoCafe.setSelectedItem(espacoCafeSelecionado);
-                
-        int colunaUsuario = 3;          
-        String usuarioSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaUsuario).toString();        
+
+        int colunaUsuario = 3;
+        String usuarioSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaUsuario).toString();
         JCBUsuario.setSelectedItem(usuarioSelecionado);
-        
-	int colunaSala = 4;          
+
+        int colunaSala = 4;
         String salaSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaSala).toString();
-	JCBSala.setSelectedItem(salaSelecionado);
-        
-        
-	//a linha abaixo desabilita o botão adicionar
-	jTxtIdTreinamento.setEnabled(false);	
-        jTxtIntervaloTreinamento.setEnabled(false);	
-        JCBEtapa.setEnabled(false);	
-        JCBEspacoCafe.setEnabled(false);	
+        JCBSala.setSelectedItem(salaSelecionado);
+
+        //a linha abaixo desabilita o botão adicionar
+        jTxtIdTreinamento.setEnabled(false);
+        jTxtIntervaloTreinamento.setEnabled(false);
+        JCBEtapa.setEnabled(false);
+        JCBEspacoCafe.setEnabled(false);
         JCBUsuario.setEnabled(false);
-        
+
+        BtCadastrarTreinamento.setEnabled(false);
+
     }
 
     private void limpaCampo() {
@@ -189,7 +236,6 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         jTxtIntervaloTreinamento.requestFocus();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -302,6 +348,11 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         });
 
         BtAtualizarTreinamento.setText("ATUALIZAR");
+        BtAtualizarTreinamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtAtualizarTreinamentoActionPerformed(evt);
+            }
+        });
 
         BtCadastrarTreinamento.setText("CADASTRAR");
         BtCadastrarTreinamento.addActionListener(new java.awt.event.ActionListener() {
@@ -467,24 +518,24 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JCBSalaAncestorAdded
 
     private void BtCadastrarTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarTreinamentoActionPerformed
-          try {
+        try {
 
-                    if (isHoraValida(jTxtIntervaloTreinamento.getText().toString()) == true) {
+            if (isHoraValida(jTxtIntervaloTreinamento.getText().toString()) == true) {
 
-                         adicionar();
+                adicionar();
 
-                    } else {
-                        
-                     JOptionPane.showMessageDialog(null, "HORA INVÁLIDA");
+            } else {
 
-                    }
+                JOptionPane.showMessageDialog(null, "HORA INVÁLIDA");
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    
-                }
-        
-       
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+
     }//GEN-LAST:event_BtCadastrarTreinamentoActionPerformed
 
     private void jTxtIntervaloTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtIntervaloTreinamentoActionPerformed
@@ -494,6 +545,10 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     private void BtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtBuscarActionPerformed
         pesquisarUsuarios();
     }//GEN-LAST:event_BtBuscarActionPerformed
+
+    private void BtAtualizarTreinamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtAtualizarTreinamentoActionPerformed
+        alterar();
+    }//GEN-LAST:event_BtAtualizarTreinamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
