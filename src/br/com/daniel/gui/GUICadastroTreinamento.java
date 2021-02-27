@@ -65,9 +65,12 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             if (jTxtIntervaloTreinamento.getText().contentEquals("  :  ")) {
                 JOptionPane.showMessageDialog(null, "Informe a Hora");
                 jTxtIntervaloTreinamento.requestFocus();
-            } else if (JCBEspacoCafe.getSelectedItem() == null || JCBUsuario.getSelectedItem() == null
-                    || JCBSala.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(null, "Não Contém nenhum cadastro ");
+            } else if (JCBEspacoCafe.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "Não Contém Nenhum Espaço Café Cadastrado");
+            } else if (JCBUsuario.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "Não Contém Nenhum Usuário Cadastrado");
+            } else if (JCBSala.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "Não Contém Nenhuma Sala Cadastrada");
             } else {
                 espacoCafe = new EspacoCafe();
                 usuario = new Usuario();
@@ -402,12 +405,13 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                             .addComponent(jLblNomeCliente))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(JCBSala, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JCBEspacoCafe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JCBEtapa, 0, 295, Short.MAX_VALUE)
+                            .addComponent(JCBSala, 0, 173, Short.MAX_VALUE)
                             .addComponent(JCBUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTxtIdTreinamento)
-                            .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))))
+                            .addComponent(JCBEtapa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(JCBEspacoCafe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTxtIntervaloTreinamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                                .addComponent(jTxtIdTreinamento, javax.swing.GroupLayout.Alignment.LEADING)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

@@ -1,4 +1,3 @@
-
 package br.com.daniel.dao;
 
 import static br.com.daniel.dao.UsuarioDAO.rss;
@@ -12,8 +11,8 @@ import javax.swing.JOptionPane;
 public class EventoDAO {
 
     public static PreparedStatement pst = null;
-    public  ResultSet rs = null;
-   
+    public ResultSet rs = null;
+    private int resultadoSala = 0;
     public static Connection connection;
 
     public EventoDAO() throws SQLException {
@@ -21,6 +20,7 @@ public class EventoDAO {
     }
 
     public void salvar(Evento evento) {
+        compararUsuario();
         String sql = "INSERT INTO evento (intervalo, etapa, espaco_cafe_id, usuario_id, sala_id ) VALUES (?,?,?,?,?)";
         try {
 
@@ -36,11 +36,11 @@ public class EventoDAO {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-     public void alterar(Evento evento) {
 
+    public void alterar(Evento evento) {
+    
         try {
-   
+
             String query = "update evento set intervalo=?, etapa=?, espaco_cafe_id=?, usuario_id=? , sala_id=? where id=?";
             pst = connection.prepareStatement(query);
             pst.setInt(6, evento.getId());
@@ -55,21 +55,21 @@ public class EventoDAO {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-        public void buscarEventoPorNomeDoUsuario(Usuario usuario) {
+
+    public void buscarEventoPorNomeDoUsuario(Usuario usuario) {
         try {
-            
+
             String sql = "select\n"
                     + "\n"
-                    + " ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"                 
+                    + " ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"
                     + "\n"
                     + "from\n"
                     + "evento ev\n"
                     + "inner join sala sa on(sa.id = ev.sala_id)\n"
                     + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
                     + "inner join usuario us on(us.id = ev.usuario_id)\n"
-                    + "where us.nome  LIKE '%" + usuario.getNome() + "%'\n" ;
-            
+                    + "where us.nome  LIKE '%" + usuario.getNome() + "%'\n";
+
             pst = connection.prepareStatement(sql);
 
             rss = pst.executeQuery();
@@ -79,21 +79,41 @@ public class EventoDAO {
 
         }
     }
-        
-          public void getTodosEventos() {
+
+    public void compararUsuario() {
+        try {
+            String sqlquery = "SELECT e.salaid\n"
+                    + "FROM (\n"
+                    + "	SELECT COUNT(ev.id) AS qtd, ev.sala_id AS salaid  FROM evento AS ev \n"
+                    + "	GROUP BY ev.sala_id)  e\n"
+                    + "ORDER BY e.qtd ASC\n"
+                    + "LIMIT 1;";
+            pst = connection.prepareStatement(sqlquery);
+            ResultSet rs = pst.executeQuery(sqlquery);
+
+            while (rs.next()) {
+                String retorno = rs.getString("salaid");
+                resultadoSala = (Integer.parseInt(retorno));
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    public void getTodosEventos() {
 
         try {
             String sql = "select\n"
-                            + "\n"
-                            + "ev.id AS IdEvento, ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"                 
-                            + "\n"
-                            + "from\n"
-                            + "evento ev\n"
-                            + "inner join sala sa on(sa.id = ev.sala_id)\n"
-                            + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
-                            + "inner join usuario us on(us.id = ev.usuario_id)\n";
-                            
-            
+                    + "\n"
+                    + "ev.id AS IdEvento, ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"
+                    + "\n"
+                    + "from\n"
+                    + "evento ev\n"
+                    + "inner join sala sa on(sa.id = ev.sala_id)\n"
+                    + "inner join espaco_cafe ec on(ec.id = ev.espaco_cafe_id)\n"
+                    + "inner join usuario us on(us.id = ev.usuario_id)\n";
+
             pst = connection.prepareStatement(sql);
             rss = pst.executeQuery();
         } catch (Exception e) {

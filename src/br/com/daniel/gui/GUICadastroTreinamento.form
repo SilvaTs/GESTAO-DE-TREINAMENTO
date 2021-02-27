@@ -54,12 +54,12 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="JCBSala" max="32767" attributes="0"/>
-                          <Component id="JCBEspacoCafe" max="32767" attributes="0"/>
-                          <Component id="JCBEtapa" alignment="0" pref="295" max="32767" attributes="0"/>
+                          <Component id="JCBSala" pref="173" max="32767" attributes="0"/>
                           <Component id="JCBUsuario" max="32767" attributes="0"/>
+                          <Component id="JCBEtapa" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JCBEspacoCafe" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTxtIntervaloTreinamento" alignment="0" pref="73" max="32767" attributes="0"/>
                           <Component id="jTxtIdTreinamento" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTxtIntervaloTreinamento" alignment="0" pref="59" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
