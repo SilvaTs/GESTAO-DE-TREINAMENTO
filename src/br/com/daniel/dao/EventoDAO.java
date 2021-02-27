@@ -85,7 +85,7 @@ public class EventoDAO {
         try {
             String sql = "select\n"
                             + "\n"
-                            + " ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"                 
+                            + "ev.id AS IdEvento, ev.intervalo,ev.etapa,ec.descricao AS Espaço  , us.nome AS pessoas, sa.nome AS Sala\n"                 
                             + "\n"
                             + "from\n"
                             + "evento ev\n"

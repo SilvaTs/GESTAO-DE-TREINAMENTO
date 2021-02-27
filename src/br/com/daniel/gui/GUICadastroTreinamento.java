@@ -94,7 +94,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                 eventoDAO = new EventoDAO();
                 eventoDAO.salvar(evento);
                 JOptionPane.showMessageDialog(null, "Cadastro Inserido com Sucesso!");
-
+                pesquisarUsuarios();
                 limpaCampo();
             }
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                 jTxtIntervaloTreinamento.requestFocus();
             } else if (JCBEspacoCafe.getSelectedItem() == null || JCBUsuario.getSelectedItem() == null
                     || JCBSala.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(null, "Não Contém nenhum cadastro ");
+
             } else {
                 espacoCafe = new EspacoCafe();
                 usuario = new Usuario();
@@ -133,15 +133,14 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
                 int posicaoSala = JCBSala.getSelectedIndex();
                 Sala sala = listarSalas.get(posicaoSala);
                 evento.setSala(sala);
-                
-                int id = Integer.parseInt(jTxtIdTreinamento.getText());               
+
+                int id = Integer.parseInt(jTxtIdTreinamento.getText());
                 evento.setId(id);
                 eventoDAO = new EventoDAO();
                 eventoDAO.alterar(evento);
-              
-                atualizaTabela();
+
                 JOptionPane.showMessageDialog(null, "Atualizado com sucesso! ");
-              
+                pesquisarUsuarios();
             }
 
         } catch (Exception e) {
@@ -158,7 +157,6 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
             usuario.setNome(jTxtPesquisarUsuarios.getText());
             if (jTxtPesquisarUsuarios.getText().isEmpty()) {
 
-                JOptionPane.showMessageDialog(null, "Digite um Nome ou a Letra Inical Da Pessoa");
                 atualizaTabela();
             } else {
 
@@ -199,23 +197,22 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
     public void setar_campos() {
 
         int setar = jTblTreinamento.getSelectedRow();
+        jTxtIdTreinamento.setText(jTblTreinamento.getModel().getValueAt(setar, 0).toString());
+        jTxtIntervaloTreinamento.setText(jTblTreinamento.getModel().getValueAt(setar, 1).toString());
 
-        jTxtIntervaloTreinamento.setText(jTblTreinamento.getModel().getValueAt(setar, 0).toString());
-        jTxtIdTreinamento.setText(jTblTreinamento.getModel().getValueAt(setar, 1).toString());
-
-        int colunaEtapa = 1;
+        int colunaEtapa = 2;
         String etapaSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEtapa).toString();
         JCBEtapa.setSelectedItem(etapaSelecionado);
 
-        int colunaEspacoCafe = 2;
+        int colunaEspacoCafe = 3;
         String espacoCafeSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaEspacoCafe).toString();
         JCBEspacoCafe.setSelectedItem(espacoCafeSelecionado);
 
-        int colunaUsuario = 3;
+        int colunaUsuario = 4;
         String usuarioSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaUsuario).toString();
         JCBUsuario.setSelectedItem(usuarioSelecionado);
 
-        int colunaSala = 4;
+        int colunaSala = 5;
         String salaSelecionado = jTblTreinamento.getModel().getValueAt(setar, colunaSala).toString();
         JCBSala.setSelectedItem(salaSelecionado);
 
@@ -273,13 +270,13 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
 
         jTblTreinamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Intervalo", "Etapa", "Espaço ", "Pessoas", "Sala"
+                "IdEvento", "Intervalo", "Etapa", "Espaço ", "Pessoas", "Sala"
             }
         ));
         jTblTreinamento.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -311,32 +308,32 @@ public class GUICadastroTreinamento extends javax.swing.JInternalFrame {
         JCBEtapa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", " " }));
 
         JCBUsuario.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 JCBUsuarioAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
         });
 
         JCBEspacoCafe.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 JCBEspacoCafeAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
         });
 
         JCBSala.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 JCBSalaAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
 
