@@ -54,7 +54,7 @@ exemplo do caminho : C:\Users\Daniel\Documents\NetBeansProjects\GESTAO-DE-TREINA
 
 - [Java](https://www.java.com/en/download/windows_offline.jsp)
 - [Apache Netbeans IDE 11.2](https://netbeans.apache.org/download/nb112/nb112.html)
-- [Mysql](https://dev.mysql.com/downloads/installer/)
+- [Mysql 8](https://dev.mysql.com/downloads/installer/)
   
 ---
 
