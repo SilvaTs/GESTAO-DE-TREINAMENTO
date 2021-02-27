@@ -20,7 +20,7 @@ Um sistema Desktop para gerenciar eventos de treinamento de pessoas 🚀
 
 # :construction_worker: Instalação
 
-**Você precisa instalar o [Apache Netbeans IDE 11.2](https://netbeans.apache.org/download/nb112/nb112.html) e o [Mysql 8](https://dev.mysql.com/downloads/installer/) e, em seguida, para clonar o projeto via HTTPS, execute este comando :**
+**Você precisa instalar o [Apache Netbeans IDE 11.2](https://netbeans.apache.org/download/nb112/nb112.html) e o [Mysql 8](https://dev.mysql.com/downloads/installer/), e em seguida, para clonar o projeto via HTTPS, execute este comando :**
 
 ```
 git clone https://github.com/SilvaTs/GESTAO-DE-TREINAMENTO.git
